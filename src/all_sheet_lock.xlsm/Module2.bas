@@ -5,7 +5,7 @@ Sub UnLock_sheet()
   If strFilePath <> "False" Then
     Set wb1 = Workbooks.Open(strFilePath)
   Else
-    MsgBox "キャンセルされました"
+    MsgBox "キャンセルされました", Buttons:=vbExclamation
     Exit Sub
   End If
   wb1.Activate
@@ -16,5 +16,10 @@ Sub UnLock_sheet()
   pass = InputBox("解除用のパスワードを入力", "パスワード入力", "Passw0rd")
   For Each s In wb1.Sheets
     s.UnProtect Password:=pass
+    If s.ProtectContents Then
+      MsgBox "パスワードが違います"
+      Exit Sub
+    End If
   Next s
+  MsgBox strFilePath & "のロックを解除しました", Buttons:=vbOKOnly + vbInformation
 End Sub
